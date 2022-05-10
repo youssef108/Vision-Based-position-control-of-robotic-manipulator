@@ -11,7 +11,7 @@ import triangulation as tri
 import Kinematics
 import collections
 import serial
-from convert_angles_to_motor import ArraytoString
+
 
 #display
 # Open both cameras
@@ -28,7 +28,15 @@ def compareArray(current,prev):
         if(abs(current[i]-prev[i])<1.5):
             flag=False
             return flag
-    return flag        
+    return flag       
+def ArraytoString(Array):
+    string= ''
+    i=0
+    while (i<len(Array)):
+        string+=str(Array[i])
+        string+=','
+        i+=1
+    return string  
 # communication and control 
 stepsPerRevolution = [32800,6800,-6800,20800,-7200];  #microsteps/revolution (using 16ths) from observation, for each motor (int)
 joint_status = 0 #int
