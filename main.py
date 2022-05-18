@@ -38,7 +38,7 @@ def ArraytoString(Array):
         i+=1
     return string  
 # communication and control 
-stepsPerRevolution = [32800,6800,-6800,20800,-7200];  #microsteps/revolution (using 16ths) from observation, for each motor (int)
+stepsPerRevolution = [32800,-6800,6800,20800,-7200];  #microsteps/revolution (using 16ths) from observation, for each motor (int)
 joint_status = 0 #int
 cur_angle=[0.0,0.0,0.0,0.0,0.0,0.0] #float
 joint_step=[0,0,0,0,0,0] #int
@@ -47,7 +47,7 @@ init_angle = [0.0,0.0,0.0,0.0,0.0,0.0]
 total_steps = [0.0,0.0,0.0,0.0,0.0,0.0]
 arm_steps=[0,0,0,0,0,0]
 totalPosition=[0,0,0,0,0]
-desired=[0,90,90,90]
+desired=[0,70,0,0]
 
 cap_right = cv2.VideoCapture(2, cv2.CAP_DSHOW)                    
 cap_left =  cv2.VideoCapture(1, cv2.CAP_DSHOW)
@@ -99,7 +99,6 @@ bufferyj4=collections.deque(bufferyj4)
 bufferzj4=[0,0,0,0,0,0]
 bufferzj4=collections.deque(bufferzj4)
 #robot control values
-currentAngles=[0,0,0,0]
 def cmd_cb(JointPositions,q1,q2,q3,q4):
     # if (count==0):
     #     prev_angle[0] = JointPositions[0]
@@ -117,17 +116,17 @@ def cmd_cb(JointPositions,q1,q2,q3,q4):
     #     init_angle[5] = JointPositions[5]
     arm_steps[0] = (int)((JointPositions[0]-prev_angle[0])*stepsPerRevolution[0]/(360))
     arm_steps[1] = (int)((JointPositions[1]-prev_angle[1])*stepsPerRevolution[1]/(360))
-    arm_steps[2] = (int)((JointPositions[2]-prev_angle[2])*stepsPerRevolution[2]/(360))
-    arm_steps[3] = (int)((JointPositions[3]-prev_angle[3])*stepsPerRevolution[3]/(360))
-    arm_steps[4] = (int)((JointPositions[4]-prev_angle[4])*stepsPerRevolution[4]/(360))
+    arm_steps[2] = (int)((JointPositions[1]-prev_angle[2])*stepsPerRevolution[2]/(360))
+    arm_steps[3] = (int)((JointPositions[2]-prev_angle[3])*stepsPerRevolution[3]/(360))
+    arm_steps[4] = (int)((JointPositions[3]-prev_angle[4])*stepsPerRevolution[4]/(360))
 
 
     # if (count!=0):
-    prev_angle[0] = JointPositions[0]
-    prev_angle[1] = q2
-    prev_angle[2] = q2
-    prev_angle[3] = q3
-    prev_angle[4] = q4
+    # prev_angle[0] = 0
+    # prev_angle[1] = q2
+    # prev_angle[2] = q2
+    # prev_angle[3] = q3
+    # prev_angle[4] = q4
 
     
     totalPosition[0] += arm_steps[0]
@@ -271,7 +270,7 @@ while(True):
             xj1,yj1,zj1,xj2,yj2,zj2,xj3,yj3,zj3,xj4,yj4,zj4=Kinematics.relateCoordinates(x,y,z,xj1,yj1,zj1,xj2,yj2,zj2,xj3,yj3,zj3,xj4,yj4,zj4)   
            
             q1,q2,q3,q4=Kinematics.getAngles(xj1,yj1,zj1,xj2,yj2,zj2,xj3,yj3,zj3,xj4,yj4,zj4)
-            prev_angle=[q1,q2,q3,q4]
+            prev_angle=[q1,q2,q2,q3,q4]
             # display(background,xj1,yj1,zj1,xj2,yj2,zj2,xj3,yj3,zj3,xj4,yj4,zj4,q1,q2,q3)
             # print("zj1 ", zj1,"x1: ",xj1, "y1: ",yj1)
             # print("zj2 ", zj2,"x2: ",xj2, "y2: ",yj2)
@@ -284,16 +283,19 @@ while(True):
 
         # background = cv2.imread("backround.jpg")
         # background=cv2.resize(background,(700,300))
-
+        #  (not (compareArray(desired,prev_angle)))
         #send to arduino new angles
-        if((time.time()-prevtime)>4 and (not (compareArray(desired,prev_angle)))):
-            total=cmd_cb(desired,q1,q2,q3,q4)
-            count+=1
-            print(total)
-            cmd=ArraytoString(total)
-            cmd=cmd+'\r'
-            arduinoData.write(cmd.encode())
-            prevtime=time.time()
+        if((time.time()-prevtime)>3 ):
+              total=cmd_cb(desired,q1,q2,q3,q4)
+              print(1)
+              cmd=ArraytoString(total)
+              cmd=cmd+'\r'
+              print(cmd)
+              arduinoData.write(cmd.encode())
+              prevtime=time.time()
+              time.sleep(2)
+              if(abs(desired[3]-prev_angle[3])<1.5):
+                  break
 
         # Show the frames
         cv2.imshow("frame right", frame_right) 

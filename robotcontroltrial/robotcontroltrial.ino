@@ -78,30 +78,31 @@ void loop() {
   cmd=Serial.readStringUntil('\r');Serial.flush();
 
   //if (joint_status == 1) // If command callback (arm_cb) is being called, execute stepper command
-  { 
+    split(cmd);
     long positions[5]={0,0,0,0,0};  // Array of desired stepper positions must be long
-    positions[0] = joint_step2[0].toInt(); 
+//    positions[0] = joint_step2[0].toInt(); 
     positions[1] = joint_step2[1].toInt(); 
     positions[2] = joint_step2[2].toInt(); 
-    positions[3] = joint_step2[3].toInt(); 
-    positions[4] = joint_step2[4].toInt(); 
-       
+//    positions[3] = joint_step2[3].toInt(); 
+//    positions[4] = joint_step2[4].toInt(); 
+//   stepper3.move(joint_step2[4].toInt());
+//   stepper3.run();
     steppers.moveTo(positions);
     //nh.spinOnce();
     steppers.runSpeedToPosition();// Blocks until all are in position
-    split(cmd);
     
-//    Serial.print(positions[0]);
-//    Serial.print(" ");
-//     Serial.print(positions[1]);
-//    Serial.print(" ");
-//     Serial.print(positions[2]);
-//    Serial.print(" ");
-//     Serial.print(positions[3]);
-//    Serial.print(" ");
-//     Serial.println(positions[4]);
-     Serial.println("Done");
-            }
+   
+    Serial.print(positions[0]);
+    Serial.print(" ");
+     Serial.print(positions[1]);
+    Serial.print(" ");
+     Serial.print(positions[2]);
+    Serial.print(" ");
+     Serial.print(positions[3]);
+    Serial.print(" ");
+     Serial.println(positions[4]);
+     //Serial.println("Done");
+            
   joint_status = 0;
   delay(1);
   

@@ -56,39 +56,40 @@ def getAngles(xj1,yj1,zj1,xj2,yj2,zj2,xj3,yj3,zj3,xj4,yj4,zj4):
 
     #q1=np.arctan2(yj1,xj1)
     # q1=(q1*180)/pi
-    q1=np.arctan2(yj2,xj2)
-    q1=(q1*180)/pi
+    # q1=np.arctan2(yj2,xj2)
+    # q1=(q1*180)/pi
     if((xj2-xj1)==0):
         q2=90
     else:
-        S=sqrt(xj2**2 + yj2**2)
-        q2=np.arctan2((zj2-zj1),(S))
+        # S=sqrt(xj2**2 + yj2**2)
+        q2=np.arctan2((zj2-zj1),(xj2-xj1))
         q2=(q2*180)/pi
 
     if((xj3-xj2)==0):
         q3=90
     else:
         S=sqrt(xj3**2 +yj3**2)-sqrt(xj2**2 + yj2**2) 
-        q3=np.arctan2((zj3-zj2),(S))
+        q3=np.arctan2((zj3-zj2),((xj3-xj2)))
         q3=((q3*180)/pi - q2)
-
+        q3=-q3
     if((xj4-xj3)==0):
         q4=90
     else:    
         S=sqrt(xj4**2 +yj4**2)-sqrt(xj3**2 + yj3**2) 
-        q4=np.arctan2((zj4-zj3),(S))
+        q4=np.arctan2((zj4-zj3),(xj4-xj3))
         q4=(q4*180)/pi -(q2+q3)
+        q4=-q4
     #using forward kinematics to get q1 and q5    
-    q2_t=(q2*pi)/180 
-    q3_t=(q3*pi)/180
-    q4_t=(q4*pi)/180
-    try: 
-        q1,q2_t,q3_t=fsolve(forward_kinemtaics,(1,q2_t,q3_t),(xj4,yj4,zj4,q4_t))
-        q1=(q1*180)/pi
-        q1_temp=q1
-    except:
-        print("not able to calculate q1")
-        q1=q1_temp
+    # q2_t=(q2*pi)/180 
+    # q3_t=(q3*pi)/180
+    # q4_t=(q4*pi)/180
+    # try: 
+    #     q1,q2_t,q3_t=fsolve(forward_kinemtaics,(1,q2_t,q3_t),(xj4,yj4,zj4,q4_t))
+    #     q1=(q1*180)/pi
+    #     q1_temp=q1
+    # except:
+    #     print("not able to calculate q1")
+    #     q1=q1_temp
     return q1,q2,q3,q4
 
 # q1=1.2

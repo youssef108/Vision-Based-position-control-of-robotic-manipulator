@@ -12,7 +12,7 @@ init_angle = [0.0,0.0,0.0,0.0,0.0,0.0]
 total_steps = [0.0,0.0,0.0,0.0,0.0,0.0]
 arm_steps=[0,0,0,0,0,0]
 totalPosition=[0,0,0,0,0]
-desired=[0,90,90,90]
+desired=[0,0,0,0,90]
 def cmd_cb(JointPositions):
     # if (count==0):
     #     prev_angle[0] = JointPositions[0]
@@ -66,21 +66,20 @@ while True:
     
     time.sleep(1)
     #prev_angle=currentAngle  current angle get from main
-    if(prev_angle!=desired  and  count!=0):
-        total=cmd_cb(desired)
-    if(count)
+    total=cmd_cb(desired)
     count+=1
     print(total)
     cmd=ArraytoString(total)
     cmd=cmd+'\r'
     #print(cmd)
     arduinoData.write(cmd.encode())
+    desired[4]+=10
 
     while(arduinoData.inWaiting()==0):
         pass
     data=arduinoData.readline()
     data=str(data,'utf-8')
     data=data.strip('\r\n')
-    # data=data.split(",")
+    data=data.split(",")
     print(data)
     time.sleep(3)

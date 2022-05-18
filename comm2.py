@@ -4,7 +4,7 @@ import serial
 
 import sys
 import time
-arduinoData=serial.Serial('com5',115200)
+arduinoData=serial.Serial('com4',115200)
 time.sleep(5)
 while True:
     
