@@ -81,10 +81,10 @@ void loop() {
     split(cmd);
     long positions[5]={0,0,0,0,0};  // Array of desired stepper positions must be long
 //    positions[0] = joint_step2[0].toInt(); 
-    positions[1] = joint_step2[1].toInt(); 
-    positions[2] = joint_step2[2].toInt(); 
+    //positions[1] = joint_step2[1].toInt(); 
+    //positions[2] = joint_step2[2].toInt(); 
 //    positions[3] = joint_step2[3].toInt(); 
-//    positions[4] = joint_step2[4].toInt(); 
+    positions[4] = joint_step2[4].toInt(); 
 //   stepper3.move(joint_step2[4].toInt());
 //   stepper3.run();
     steppers.moveTo(positions);

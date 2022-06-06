@@ -16,8 +16,8 @@ def add_HSV_filter(frame, color):
         u_b_blue = np.array([124, 184, 255])       # Upper limit for red ball
         mask = cv2.inRange(hsv, l_b_blue, u_b_blue)
     elif color == 'y':
-        l_y= np.array([0,100,168])
-        u_y =np.array([169,255,255])
+        l_y= np.array([0,207,35])
+        u_y =np.array([73,255,255])
         mask= cv2.inRange(hsv,l_y,u_y)
     elif color =='g':
         l_green= np.array([71,88,59])

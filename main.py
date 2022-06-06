@@ -47,7 +47,7 @@ init_angle = [0.0,0.0,0.0,0.0,0.0,0.0]
 total_steps = [0.0,0.0,0.0,0.0,0.0,0.0]
 arm_steps=[0,0,0,0,0,0]
 totalPosition=[0,0,0,0,0]
-desired=[0,70,0,0]
+desired=[0,90,0,45]
 
 cap_right = cv2.VideoCapture(2, cv2.CAP_DSHOW)                    
 cap_left =  cv2.VideoCapture(1, cv2.CAP_DSHOW)
@@ -280,7 +280,13 @@ while(True):
             # print("q3 ",q3)
             # print("q1 ",q1)
             print("zj4 ", zj4,"x4: ",xj4, "y4: ",yj4)
-
+        cv2.putText(frame_right, "q_5 :", (70,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0),2)
+        cv2.putText(frame_right, str(round(q4,2)), (195,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0),2)
+        # cv2.putText(frame_right, "y_end :", (320,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0),2)
+        # cv2.putText(frame_right, str(round(yj4,2)), (445,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0),2)
+        # cv2.putText(frame_right, "z_end :", (570,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0),2)
+        # cv2.putText(frame_right, str(round(zj4,2)), (695,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0),2)
+        # cv2.putText(frame_left, "TRACKING LOST", (820,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0),2)   
         # background = cv2.imread("backround.jpg")
         # background=cv2.resize(background,(700,300))
         #  (not (compareArray(desired,prev_angle)))
@@ -293,9 +299,9 @@ while(True):
               print(cmd)
               arduinoData.write(cmd.encode())
               prevtime=time.time()
-              time.sleep(2)
-              if(abs(desired[3]-prev_angle[3])<1.5):
-                  break
+            #   time.sleep(2)
+            #   if(abs(desired[3]-prev_angle[3])<1.5):
+            #       break
 
         # Show the frames
         cv2.imshow("frame right", frame_right) 
